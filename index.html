@@ -323,14 +323,17 @@
 
   .footer-inner {
     display: flex;
+    flex-direction: column;
+    gap: 16px;
     align-items: center;
-    justify-content: space-between;
   }
 
-  .footer-brand {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--ink-tertiary);
+  .footer-top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
   }
 
   .footer-copy {
@@ -338,6 +341,32 @@
     color: var(--ink-tertiary);
     font-weight: 400;
   }
+
+  .footer-home-link {
+    font-size: 12px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer-home-link:hover { opacity: 0.7; }
+
+  .footer-nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    list-style: none;
+  }
+
+  .footer-nav a {
+    font-size: 12px;
+    color: var(--ink-tertiary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .footer-nav a:hover { color: var(--ink-secondary); }
 
   /* ── Scrollbar ── */
   ::-webkit-scrollbar { width: 6px; }
@@ -368,7 +397,9 @@
     .section { padding: 48px 0; }
     .cards--platforms,
     .cards--two { grid-template-columns: 1fr; }
-    .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+    .footer-inner { flex-direction: column; gap: 14px; text-align: center; }
+    .footer-top { flex-direction: column; gap: 4px; }
+    .footer-nav { gap: 16px; }
     .nav-link { display: none; }
   }
 
@@ -381,7 +412,7 @@
 
   <nav>
     <div class="container nav-inner">
-      <a href="/" class="wordmark">Bright<span>Path</span></a>
+      <a href="/" class="wordmark">Bright<span>Path</span> Technologies</a>
       <a href="/BrightPath-Technologies/" class="nav-link">Consulting</a>
     </div>
   </nav>
@@ -471,8 +502,15 @@
 
   <footer>
     <div class="container footer-inner">
-      <div class="footer-brand">BrightPath Technology</div>
-      <div class="footer-copy">&copy; 2026 BrightPath Technology. All rights reserved.</div>
+      <div class="footer-top">
+        <span class="footer-copy">&copy; 2026 BrightPath Technologies. Toronto, Ontario, Canada.</span>
+        <a href="/" class="footer-home-link">brightpathtechnology.io &nearr;</a>
+      </div>
+      <nav class="footer-nav" aria-label="Legal">
+        <a href="https://advisors.brightpathtechnology.io/contact">Contact</a>
+        <a href="https://advisors.brightpathtechnology.io/privacy">Privacy Policy</a>
+        <a href="https://advisors.brightpathtechnology.io/terms">Terms of Use</a>
+      </nav>
     </div>
   </footer>
 
