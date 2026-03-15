@@ -25,13 +25,14 @@
   html { scroll-behavior: smooth; }
   body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; min-height: 100vh; }
 
+  /* ── Site header ── */
   header {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border); padding: 0 24px;
   }
   .header-inner {
-    max-width: 800px; margin: 0 auto;
+    max-width: 1200px; margin: 0 auto;
     display: flex; align-items: center; justify-content: space-between; height: 60px;
   }
   .header-logo { font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; }
@@ -39,6 +40,7 @@
   .header-back { font-size: 13px; color: var(--ink-secondary); text-decoration: none; display: flex; align-items: center; gap: 4px; }
   .header-back:hover { color: var(--ink); }
 
+  /* ── Login ── */
   #login-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 80px 24px 24px; }
   .login-card {
     background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
@@ -83,60 +85,198 @@
   .login-hint a { color: var(--ink-tertiary); }
   .login-hint a:hover { color: var(--ink-secondary); }
 
-  #projects-view { display: none; padding: 80px 24px 48px; }
-  .projects-inner { max-width: 800px; margin: 0 auto; }
-  .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; padding-top: 16px; }
-  .page-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
-  .page-header .subtitle { font-size: 13px; color: var(--ink-secondary); margin-top: 4px; }
-  .signout-btn { font-size: 12px; color: var(--ink-tertiary); background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 4px; }
-  .signout-btn:hover { color: var(--ink-secondary); }
+  /* ── Catalog view ── */
+  #catalog-view { display: none; padding-top: 60px; }
 
-  .category { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; }
-  .category-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 16px 20px; cursor: pointer; background: none; border: none;
-    width: 100%; font-family: var(--sans); text-align: left; transition: background 0.12s;
+  /* Top bar */
+  .top-bar {
+    position: sticky; top: 60px; z-index: 50;
+    background: rgba(249,250,251,0.97); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
   }
-  .category-header:hover { background: #f9fafb; }
-  .cat-title { font-size: 13px; font-weight: 600; color: var(--ink); }
-  .cat-count { font-size: 12px; color: var(--ink-tertiary); margin-left: 8px; }
-  .cat-chevron { width: 16px; height: 16px; color: var(--ink-tertiary); transition: transform 0.2s; flex-shrink: 0; }
-  .category.collapsed .cat-chevron { transform: rotate(-90deg); }
-  .category-body { padding: 0 20px 4px; }
-  .category.collapsed .category-body { display: none; }
+  .top-bar-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; align-items: center; gap: 12px; height: 52px;
+  }
+  .top-bar-left { display: flex; flex-direction: column; min-width: 180px; }
+  .top-bar-title { font-size: 14px; font-weight: 600; color: var(--ink); line-height: 1.2; }
+  .top-bar-subtitle { font-size: 11px; color: var(--ink-tertiary); line-height: 1.2; }
+  .top-bar-center { flex: 1; }
+  .search-input {
+    width: 100%; padding: 7px 12px;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: var(--sans); outline: none;
+    background: var(--surface); transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.10); }
+  .top-bar-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .cat-select {
+    padding: 6px 10px; border: 1px solid var(--border); border-radius: 8px;
+    font-size: 12px; font-family: var(--sans); background: var(--surface);
+    color: var(--ink); outline: none; cursor: pointer;
+  }
+  .cat-select:focus { border-color: var(--accent); }
+  .signout-btn {
+    font-size: 12px; color: var(--ink-tertiary); background: none;
+    border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; font-family: var(--sans); padding: 6px 10px;
+    transition: color 0.12s, border-color 0.12s;
+  }
+  .signout-btn:hover { color: var(--ink); border-color: rgba(0,0,0,0.2); }
 
-  .repo-row {
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-    padding: 12px 0; border-bottom: 1px solid #f3f4f6;
+  /* Gist status bar */
+  .status-bar {
+    background: #f3f4f6; border-bottom: 1px solid var(--border);
+    padding: 0 24px;
   }
-  .repo-row:last-child { border-bottom: none; }
-  .repo-info { min-width: 0; flex: 1; }
-  .repo-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .repo-name { font-size: 13px; font-weight: 500; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--ink); }
-  .badge { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.02em; }
-  .badge-public { background: var(--accent-light); color: var(--accent); }
-  .badge-private { background: #f3f4f6; color: var(--ink-secondary); }
-  .repo-desc { font-size: 12px; color: var(--ink-secondary); margin-top: 3px; line-height: 1.5; }
-  .repo-live { font-size: 11px; color: var(--accent); text-decoration: none; margin-top: 2px; display: inline-block; }
-  .repo-live:hover { text-decoration: underline; }
-  .repo-link {
-    flex-shrink: 0; padding: 6px; color: var(--ink-tertiary); text-decoration: none;
-    border-radius: 6px; transition: background 0.12s, color 0.12s;
-    display: flex; align-items: center; justify-content: center;
+  .status-bar-inner {
+    max-width: 1200px; margin: 0 auto;
+    height: 28px; display: flex; align-items: center; gap: 6px;
   }
-  .repo-link:hover { background: #f3f4f6; color: var(--ink); }
-  .repo-link svg { width: 14px; height: 14px; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+  .status-dot.synced { background: #22c55e; }
+  .status-dot.pending { background: #f59e0b; }
+  .status-dot.unsynced { background: var(--ink-tertiary); }
+  .status-text { font-size: 11px; color: var(--ink-tertiary); }
 
-  .page-footer { text-align: center; margin-top: 32px; font-size: 12px; color: var(--ink-tertiary); }
-  .page-footer a { color: var(--ink-tertiary); }
-  .page-footer a:hover { color: var(--ink-secondary); }
+  /* Table wrapper */
+  .table-wrap {
+    max-width: 1200px; margin: 0 auto;
+    padding: 16px 24px 48px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    width: 100%; border-collapse: collapse;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    min-width: 760px;
+  }
+
+  /* Sticky table head */
+  thead tr { position: sticky; top: 140px; z-index: 40; }
+  th {
+    background: var(--ink); color: #ffffff;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 0 10px; height: 36px; text-align: left; white-space: nowrap;
+    cursor: pointer; user-select: none;
+    border-right: 1px solid rgba(255,255,255,0.08);
+  }
+  th:last-child { border-right: none; }
+  th:hover { background: #1f2937; }
+  th.sorted-asc::after { content: ' ↑'; opacity: 0.7; }
+  th.sorted-desc::after { content: ' ↓'; opacity: 0.7; }
+  th.no-sort { cursor: default; }
+  th.no-sort:hover { background: var(--ink); }
+
+  /* Col widths */
+  .col-dot   { width: 28px; text-align: center; padding: 0 6px; }
+  .col-repo  { min-width: 180px; }
+  .col-cat   { width: 130px; }
+  .col-deploy { width: 180px; }
+  .col-push  { width: 90px; }
+  .col-vulns { width: 70px; text-align: center; }
+  .col-notes { min-width: 180px; }
+
+  tbody tr {
+    height: 40px; border-bottom: 1px solid #f3f4f6;
+    transition: background 0.08s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f9fafb; }
+  tbody tr.hidden-row { display: none; }
+
+  td {
+    padding: 0 10px; font-size: 12px; color: var(--ink);
+    vertical-align: middle;
+  }
+  td.col-dot { text-align: center; padding: 0 6px; }
+  td.col-vulns { text-align: center; }
+
+  /* Status dot */
+  .status-circle {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .dot-red    { background: #ef4444; }
+  .dot-amber  { background: #f59e0b; }
+  .dot-green  { background: #22c55e; }
+  .dot-grey   { background: #d1d5db; }
+
+  /* Repo cell */
+  .repo-cell { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
+  .repo-mono { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11.5px; color: var(--ink); white-space: nowrap; }
+  .vis-badge {
+    font-size: 9.5px; font-weight: 500; padding: 1px 5px; border-radius: 20px;
+    letter-spacing: 0.02em; flex-shrink: 0;
+  }
+  .vis-public  { background: var(--accent-light); color: var(--accent); }
+  .vis-private { background: #f3f4f6; color: var(--ink-secondary); }
+  .gh-link {
+    flex-shrink: 0; color: var(--ink-tertiary); text-decoration: none;
+    display: flex; align-items: center; padding: 2px;
+    border-radius: 4px; transition: color 0.12s;
+  }
+  .gh-link:hover { color: var(--ink); }
+  .gh-link svg { width: 11px; height: 11px; }
+
+  /* Category pill */
+  .cat-pill {
+    display: inline-block; font-size: 10.5px; font-weight: 500;
+    padding: 2px 7px; border-radius: 20px; white-space: nowrap;
+  }
+
+  /* Deploy cell */
+  .deploy-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 10.5px; font-weight: 500;
+    padding: 2px 7px; border-radius: 20px;
+    background: #f3f4f6; color: var(--ink-secondary); white-space: nowrap;
+  }
+  .deploy-link { text-decoration: none; }
+  .deploy-link:hover .deploy-badge { background: #e5e7eb; color: var(--ink); }
+
+  /* Last push */
+  .push-cell { font-size: 11.5px; color: var(--ink-secondary); white-space: nowrap; }
+  .push-loading { color: var(--ink-tertiary); font-style: italic; }
+
+  /* Vulns */
+  .vuln-ok  { font-size: 12px; color: #16a34a; font-weight: 500; }
+  .vuln-bad { font-size: 12px; color: #dc2626; font-weight: 500; }
+  .vuln-unk { font-size: 12px; color: var(--ink-tertiary); }
+
+  /* Notes cell */
+  .notes-wrap { position: relative; display: flex; align-items: flex-start; gap: 4px; }
+  .notes-ta {
+    width: 100%; min-width: 140px; max-width: 280px;
+    padding: 4px 7px; border: 1px solid transparent;
+    border-radius: 6px; font-size: 11.5px; font-family: var(--sans);
+    color: var(--ink); background: transparent; resize: none;
+    line-height: 1.45; rows: 2; overflow: hidden;
+    transition: border-color 0.15s, background 0.15s;
+    outline: none;
+  }
+  .notes-ta:hover { border-color: var(--border); background: var(--surface); }
+  .notes-ta:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 2px rgba(37,99,235,0.10); }
+  .notes-status {
+    font-size: 10px; color: var(--ink-tertiary); white-space: nowrap;
+    padding-top: 5px; flex-shrink: 0; min-width: 44px; text-align: right;
+  }
+  .notes-status.saving { color: #f59e0b; }
+  .notes-status.saved  { color: #16a34a; }
+
+  /* Empty state */
+  .empty-row td { text-align: center; padding: 32px; color: var(--ink-tertiary); font-size: 13px; }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <a href="/" class="header-logo">BrightPath Technologies <span>Private</span></a>
+    <a href="/" class="header-logo">BrightPath Technologies <span>· Private</span></a>
     <a href="/" class="header-back">
       <svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L4.81 7h7.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06z"/></svg>
       Home
@@ -144,6 +284,7 @@
   </div>
 </header>
 
+<!-- ── Login ── -->
 <div id="login-view">
   <div class="login-card">
     <div class="login-badge">
@@ -165,20 +306,41 @@
   </div>
 </div>
 
-<div id="projects-view">
-  <div class="projects-inner">
-    <div class="page-header">
-      <div>
-        <h1>Project Repository</h1>
-        <p class="subtitle" id="repo-summary"></p>
+<!-- ── Catalog ── -->
+<div id="catalog-view">
+  <!-- sticky top bar -->
+  <div class="top-bar">
+    <div class="top-bar-inner">
+      <div class="top-bar-left">
+        <span class="top-bar-title">Project Repository</span>
+        <span class="top-bar-subtitle" id="repo-count-label">— active repos</span>
       </div>
-      <button class="signout-btn" id="signout-btn">Sign out</button>
+      <div class="top-bar-center">
+        <input class="search-input" type="search" id="search-input" placeholder="Search by name or description…" autocomplete="off"/>
+      </div>
+      <div class="top-bar-right">
+        <select class="cat-select" id="cat-filter">
+          <option value="">All categories</option>
+        </select>
+        <button class="signout-btn" id="signout-btn">Sign out</button>
+      </div>
     </div>
-    <div id="categories-container"></div>
-    <p class="page-footer">
-      Archived repositories excluded &middot;
-      <a href="https://github.com/victorycross" target="_blank" rel="noopener">github.com/victorycross</a>
-    </p>
+  </div>
+  <!-- gist status -->
+  <div class="status-bar">
+    <div class="status-bar-inner">
+      <span class="status-dot unsynced" id="gist-dot"></span>
+      <span class="status-text" id="gist-status-text">Loading notes…</span>
+    </div>
+  </div>
+  <!-- table -->
+  <div class="table-wrap">
+    <table id="catalog-table">
+      <thead>
+        <tr id="table-head-row"></tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
   </div>
 </div>
 
@@ -186,84 +348,76 @@
 (function () {
   'use strict'
 
-  var GITHUB_BASE = 'https://github.com/victorycross'
-
-  // All repo data is static — no user input goes into DOM rendering
-  var CATEGORIES = [
-    {
-      id: 'brightpath', label: 'BrightPath / Business',
-      repos: [
-        { name: 'BrightPath-Technologies', desc: 'Business consulting website \u2014 brightpathtechnology.io', vis: 'public' },
-        { name: 'brightpath-foundation', desc: 'Professional website for BrightPath Foundation \u2014 Illuminating Educational Pathways', vis: 'public' },
-        { name: 'brightpath-risk-tracker', desc: 'Risk tracker tool', vis: 'public' },
-        { name: 'victorycross.github.io', desc: 'GitHub Pages root \u2014 BrightPath Technology landing page', vis: 'public' },
-      ]
-    },
-    {
-      id: 'ai', label: 'AI & Personas',
-      repos: [
-        { name: 'persona-x', desc: 'Structured AI persona creation, validation, and panel runtime framework', vis: 'public', url: 'https://advisors.brightpathtechnology.io' },
-        { name: '500-agents', desc: 'Curated collection of AI agent use cases across industries', vis: 'private' },
-        { name: 'agentic-core', desc: 'Core agentic framework and shared utilities', vis: 'private' },
-        { name: 'demo-agent', desc: 'Template test \u2014 minimal agentic demo', vis: 'private' },
-      ]
-    },
-    {
-      id: 'risk', label: 'Risk & Compliance Tools',
-      repos: [
-        { name: 'pwc-risk-platform', desc: 'Comprehensive risk assessment, compliance tracking, and governance framework', vis: 'private' },
-        { name: 'compliance-canvas', desc: 'Interactive compliance framework mapping and standards comparison tool', vis: 'private' },
-        { name: 'tprm', desc: 'Technology Risk & Compliance Program with One Firm Risk integration', vis: 'private' },
-        { name: 'sdlc-compliance-auditor', desc: 'Enterprise SDLC Compliance Audit & Vibe-Code Remediation Tool', vis: 'private' },
-        { name: 'evidence-coordinator', desc: 'Evidence collection and coordination tool for audit engagements', vis: 'private' },
-        { name: 'exception-dashboard', desc: 'Exception tracking and management dashboard for audit and compliance workflows', vis: 'private' },
-        { name: 'copilot-strategy-dashboard', desc: 'M365 Copilot governance and adoption strategy dashboard', vis: 'public' },
-      ]
-    },
-    {
-      id: 'personal', label: 'Personal / Portfolio',
-      repos: [
-        { name: 'david-martin-website', desc: 'Personal and professional portfolio \u2014 david-martin.ca', vis: 'public', url: 'https://david-martin.ca' },
-        { name: 'david-martin-canvas', desc: 'Portfolio design experiments', vis: 'public' },
-        { name: 'martin-family-history', desc: 'Martin family genealogy research and documentation', vis: 'private' },
-        { name: 'jorgensen-kidd-archives', desc: 'Danish genealogy archives \u2014 J\u00f8rgensen and Kidd family records', vis: 'private' },
-      ]
-    },
-    {
-      id: 'apps', label: 'Apps & Tools',
-      repos: [
-        { name: 'cleaning-planner', desc: 'Home Cleaning Planner \u2014 room-by-room task tracker for the whole household', vis: 'public' },
-        { name: 'cost-wise-home-ai', desc: 'AI-powered home cost optimization tool', vis: 'private' },
-        { name: 'supply-savvy', desc: 'Supply chain optimization and tracking tool', vis: 'private' },
-        { name: 'staff-vision-insights-dashboard', desc: 'Staff analytics and insights dashboard', vis: 'private' },
-        { name: 'safety-radar-canada', desc: 'Canadian safety incident tracking and visualization', vis: 'public' },
-        { name: 'crisis-guardian', desc: 'Crisis response coordination and incident management platform', vis: 'public' },
-        { name: 'tusc-website', desc: 'Official website for the Toronto Urban Scooter Community (TUSC)', vis: 'public' },
-        { name: 'MediaOrganizerApp', desc: 'Professional macOS media file organizer built with SwiftUI', vis: 'public' },
-      ]
-    },
-    {
-      id: 'ofr', label: 'OFR / Professional Work',
-      repos: [
-        { name: 'OFR-Issue-Tracker', desc: 'M365-native Power Apps canvas application for cross-firm risk issue management', vis: 'public' },
-        { name: 'ofr_tracker_incident', desc: 'OFR incident tracking utility', vis: 'public' },
-        { name: 'solution-intake-review', desc: 'Solution intake and review workflow tool', vis: 'private' },
-      ]
-    },
-    {
-      id: 'internal', label: 'Internal / Infrastructure',
-      repos: [
-        { name: 'project-templates', desc: 'Shared project scaffolding and templates', vis: 'private' },
-      ]
-    },
+  /* ── Static data ── */
+  var REPOS = [
+    { name: 'victorycross.github.io',          cat: 'brightpath', desc: 'GitHub Pages root \u2014 BrightPath Technology landing page',                         vis: 'public',  deploy: { url: 'https://brightpathtechnology.io',                              host: 'GitHub Pages' }, vulns: 0    },
+    { name: 'BrightPath-Technologies',          cat: 'brightpath', desc: 'Business consulting website \u2014 React/Vite app (Netlify, DNS points to GH Pages)',  vis: 'public',  deploy: null,                                                                          vulns: 0    },
+    { name: 'brightpath-foundation',            cat: 'brightpath', desc: 'Professional website for BrightPath Foundation \u2014 Illuminating Educational Pathways', vis: 'public', deploy: { url: 'http://brightpathfoundation.ca',                               host: 'GitHub Pages' }, vulns: 0    },
+    { name: 'brightpath-risk-tracker',          cat: 'brightpath', desc: 'Risk tracker tool',                                                                     vis: 'public',  deploy: { url: 'https://brightpath-risk-tracker.brightpathtechnology.io',   host: 'GitHub Pages' }, vulns: null },
+    { name: 'persona-x',                        cat: 'ai',         desc: 'Structured AI persona creation, validation, and panel runtime framework',               vis: 'public',  deploy: { url: 'https://advisors.brightpathtechnology.io',                  host: 'Vercel'       }, vulns: 0    },
+    { name: '500-agents',                       cat: 'ai',         desc: 'Curated collection of AI agent use cases across industries',                            vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'agentic-core',                     cat: 'ai',         desc: 'Core agentic framework and shared utilities',                                           vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'demo-agent',                       cat: 'ai',         desc: 'Template test \u2014 minimal agentic demo',                                             vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'pwc-risk-platform',                cat: 'risk',       desc: 'Comprehensive risk assessment, compliance tracking, and governance framework',          vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'compliance-canvas',                cat: 'risk',       desc: 'Interactive compliance framework mapping and standards comparison tool',                 vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'tprm',                             cat: 'risk',       desc: 'Technology Risk & Compliance Program with One Firm Risk integration',                   vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'sdlc-compliance-auditor',          cat: 'risk',       desc: 'Enterprise SDLC Compliance Audit & Vibe-Code Remediation Tool',                        vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'evidence-coordinator',             cat: 'risk',       desc: 'Evidence collection and coordination tool for audit engagements',                       vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'exception-dashboard',              cat: 'risk',       desc: 'Exception tracking and management dashboard for audit and compliance workflows',        vis: 'private', deploy: null,                                                                          vulns: 0    },
+    { name: 'copilot-strategy-dashboard',       cat: 'risk',       desc: 'M365 Copilot governance and adoption strategy dashboard',                               vis: 'public',  deploy: null,                                                                          vulns: null },
+    { name: 'david-martin-website',             cat: 'personal',   desc: 'Personal and professional portfolio \u2014 david-martin.ca',                            vis: 'public',  deploy: { url: 'https://david-martin.ca',                                    host: 'GitHub Pages' }, vulns: 0    },
+    { name: 'david-martin-canvas',              cat: 'personal',   desc: 'Portfolio design experiments',                                                          vis: 'public',  deploy: null,                                                                          vulns: 0    },
+    { name: 'martin-family-history',            cat: 'personal',   desc: 'Martin family genealogy research and documentation',                                    vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'jorgensen-kidd-archives',          cat: 'personal',   desc: 'Danish genealogy archives \u2014 J\u00f8rgensen and Kidd family records',               vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'cleaning-planner',                 cat: 'apps',       desc: 'Home Cleaning Planner \u2014 room-by-room task tracker for the whole household',        vis: 'public',  deploy: { url: 'https://cleaner.brightpathtechnology.io',                   host: 'GitHub Pages' }, vulns: null },
+    { name: 'cost-wise-home-ai',                cat: 'apps',       desc: 'AI-powered home cost optimization tool',                                                vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'supply-savvy',                     cat: 'apps',       desc: 'Supply chain optimization and tracking tool',                                           vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'staff-vision-insights-dashboard',  cat: 'apps',       desc: 'Staff analytics and insights dashboard',                                                vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'safety-radar-canada',              cat: 'apps',       desc: 'Canadian safety incident tracking and visualization',                                   vis: 'public',  deploy: null,                                                                          vulns: 0    },
+    { name: 'crisis-guardian',                  cat: 'apps',       desc: 'Crisis response coordination and incident management platform',                         vis: 'public',  deploy: null,                                                                          vulns: 3    },
+    { name: 'tusc-website',                     cat: 'apps',       desc: 'Official website for the Toronto Urban Scooter Community (TUSC)',                        vis: 'public',  deploy: { url: 'https://brightpathtechnology.io/tusc-website/',              host: 'GitHub Pages' }, vulns: null },
+    { name: 'MediaOrganizerApp',                cat: 'apps',       desc: 'Professional macOS media file organizer built with SwiftUI',                            vis: 'public',  deploy: null,                                                                          vulns: null },
+    { name: 'OFR-Issue-Tracker',                cat: 'ofr',        desc: 'M365-native Power Apps canvas application for cross-firm risk issue management',        vis: 'public',  deploy: null,                                                                          vulns: null },
+    { name: 'ofr_tracker_incident',             cat: 'ofr',        desc: 'OFR incident tracking utility',                                                         vis: 'public',  deploy: null,                                                                          vulns: null },
+    { name: 'solution-intake-review',           cat: 'ofr',        desc: 'Solution intake and review workflow tool',                                              vis: 'private', deploy: null,                                                                          vulns: null },
+    { name: 'project-templates',                cat: 'internal',   desc: 'Shared project scaffolding and templates',                                               vis: 'private', deploy: null,                                                                          vulns: null },
   ]
 
-  // ── Auth ──
-  function getToken() { return sessionStorage.getItem('gh_token') }
-  function saveToken(t) { sessionStorage.setItem('gh_token', t) }
-  function clearToken() { sessionStorage.removeItem('gh_token') }
+  var CATS = {
+    brightpath: { label: 'BrightPath',          color: '#dbeafe', text: '#1d4ed8' },
+    ai:         { label: 'AI & Personas',        color: '#f3e8ff', text: '#7e22ce' },
+    risk:       { label: 'Risk & Compliance',    color: '#fef9c3', text: '#854d0e' },
+    personal:   { label: 'Personal',             color: '#dcfce7', text: '#166534' },
+    apps:       { label: 'Apps & Tools',         color: '#ffedd5', text: '#9a3412' },
+    ofr:        { label: 'OFR / Professional',   color: '#e0f2fe', text: '#0369a1' },
+    internal:   { label: 'Internal',             color: '#f3f4f6', text: '#374151' },
+  }
 
-  function showError(msg) {
+  var CAT_ORDER = ['brightpath', 'ai', 'risk', 'personal', 'apps', 'ofr', 'internal']
+
+  /* ── State ── */
+  var notes = {}           // { repoName: text }
+  var gistId = null
+  var pushDates = {}       // { repoName: ISOstring }
+  var sortCol = 'cat'      // default sort
+  var sortDir = 1          // 1 = asc, -1 = desc
+  var filterSearch = ''
+  var filterCat = ''
+  var noteTimers = {}      // debounce timers per repo
+  var GIST_FILENAME = 'repo-notes.json'
+  var GIST_DESC = 'BrightPath catalog notes'
+
+  /* ── Auth ── */
+  function getToken () { return sessionStorage.getItem('gh_token') }
+  function saveToken (t) { sessionStorage.setItem('gh_token', t) }
+  function clearToken () { sessionStorage.removeItem('gh_token') }
+
+  function authHeaders () {
+    return { Authorization: 'token ' + getToken(), Accept: 'application/vnd.github.v3+json' }
+  }
+
+  /* ── Login form ── */
+  function showError (msg) {
     var el = document.getElementById('error-msg')
     el.textContent = msg
     el.style.display = msg ? 'block' : 'none'
@@ -277,20 +431,18 @@
     if (!token) return
     btn.disabled = true
     showError('')
-    fetch('https://api.github.com/user', {
-      headers: { Authorization: 'token ' + token }
-    }).then(function (res) {
-      if (!res.ok) { showError('Invalid token \u2014 check it and try again.'); btn.disabled = false; return null }
-      return res.json()
-    }).then(function (user) {
-      if (!user) return
-      if (user.login !== 'victorycross') { showError('Unauthorized \u2014 this page is restricted.'); btn.disabled = false; return }
-      saveToken(token)
-      renderProjects()
-    }).catch(function () {
-      showError('Could not reach GitHub \u2014 check your connection.')
-      btn.disabled = false
-    })
+    fetch('https://api.github.com/user', { headers: { Authorization: 'token ' + token } })
+      .then(function (res) {
+        if (!res.ok) { showError('Invalid token \u2014 check it and try again.'); btn.disabled = false; return null }
+        return res.json()
+      })
+      .then(function (user) {
+        if (!user) return
+        if (user.login !== 'victorycross') { showError('Unauthorised \u2014 this page is restricted.'); btn.disabled = false; return }
+        saveToken(token)
+        initCatalog()
+      })
+      .catch(function () { showError('Could not reach GitHub \u2014 check your connection.'); btn.disabled = false })
   })
 
   document.getElementById('signout-btn').addEventListener('click', function () {
@@ -298,138 +450,473 @@
     location.reload()
   })
 
-  // ── Render (all data is static, safe to use DOM methods) ──
-  function toggleCategory(id) {
-    var el = document.getElementById('cat-' + id)
-    if (el) el.classList.toggle('collapsed')
+  /* ── Relative time ── */
+  function relTime (iso) {
+    if (!iso) return '\u2014'
+    var diff = Date.now() - new Date(iso).getTime()
+    var mins = Math.floor(diff / 60000)
+    if (mins < 1) return 'just now'
+    if (mins < 60) return mins + 'm ago'
+    var hrs = Math.floor(mins / 60)
+    if (hrs < 24) return hrs + 'h ago'
+    var days = Math.floor(hrs / 24)
+    if (days < 30) return days + 'd ago'
+    var mos = Math.floor(days / 30)
+    if (mos < 12) return mos + 'mo ago'
+    return Math.floor(mos / 12) + 'y ago'
   }
 
-  function renderCategory(cat) {
-    var section = document.createElement('div')
-    section.className = 'category'
-    section.id = 'cat-' + cat.id
+  /* ── Status dot logic ── */
+  function dotClass (repo) {
+    if (repo.vulns > 0) return 'dot-red'
+    if (repo.vulns === null) return 'dot-amber'
+    if (repo.deploy && repo.vulns === 0) return 'dot-green'
+    return 'dot-grey'
+  }
 
-    var btn = document.createElement('button')
-    btn.className = 'category-header'
-    btn.type = 'button'
-    btn.addEventListener('click', function () { toggleCategory(cat.id) })
+  /* ── Sort value per column ── */
+  function sortVal (repo, col) {
+    if (col === 'dot')    return dotClass(repo)
+    if (col === 'name')   return repo.name.toLowerCase()
+    if (col === 'cat')    return CAT_ORDER.indexOf(repo.cat) + '|' + repo.name.toLowerCase()
+    if (col === 'deploy') return repo.deploy ? repo.deploy.host : ''
+    if (col === 'push')   return pushDates[repo.name] || ''
+    if (col === 'vulns')  return repo.vulns === null ? 999 : repo.vulns
+    return ''
+  }
 
-    var titleWrap = document.createElement('div')
-    var titleSpan = document.createElement('span')
-    titleSpan.className = 'cat-title'
-    titleSpan.textContent = cat.label
-    var countSpan = document.createElement('span')
-    countSpan.className = 'cat-count'
-    countSpan.textContent = cat.repos.length + ' repos'
-    titleWrap.appendChild(titleSpan)
-    titleWrap.appendChild(countSpan)
+  /* ── Gist status UI ── */
+  function setGistStatus (state, msg) {
+    var dot = document.getElementById('gist-dot')
+    var txt = document.getElementById('gist-status-text')
+    dot.className = 'status-dot ' + state
+    txt.textContent = msg
+  }
 
-    // chevron SVG
-    var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-    chevron.setAttribute('viewBox', '0 0 16 16')
-    chevron.setAttribute('fill', 'currentColor')
-    chevron.classList.add('cat-chevron')
-    var chevPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-    chevPath.setAttribute('d', 'M4.427 7.427l3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z')
-    chevron.appendChild(chevPath)
+  /* ── Gist: load notes ── */
+  function loadGistNotes () {
+    setGistStatus('pending', 'Loading notes\u2026')
+    var stored = localStorage.getItem('bp_catalog_gist_id')
+    if (stored) {
+      gistId = stored
+      fetchGist(gistId)
+    } else {
+      searchGists()
+    }
+  }
 
-    btn.appendChild(titleWrap)
-    btn.appendChild(chevron)
-    section.appendChild(btn)
+  function fetchGist (id) {
+    fetch('https://api.github.com/gists/' + id, { headers: authHeaders() })
+      .then(function (r) {
+        if (r.status === 404) { gistId = null; localStorage.removeItem('bp_catalog_gist_id'); searchGists(); return null }
+        if (!r.ok) { setGistStatus('unsynced', 'Could not load notes'); return null }
+        return r.json()
+      })
+      .then(function (data) {
+        if (!data) return
+        var file = data.files && data.files[GIST_FILENAME]
+        if (file && file.content) {
+          try { notes = JSON.parse(file.content) } catch (e) { notes = {} }
+        }
+        populateNotes()
+        setGistStatus('synced', 'Notes synced \u00b7 gist ID: ' + id)
+      })
+      .catch(function () { setGistStatus('unsynced', 'Could not reach GitHub for notes') })
+  }
 
-    var body = document.createElement('div')
-    body.className = 'category-body'
+  function searchGists () {
+    fetch('https://api.github.com/gists?per_page=100', { headers: authHeaders() })
+      .then(function (r) { return r.ok ? r.json() : [] })
+      .then(function (list) {
+        var found = null
+        for (var i = 0; i < list.length; i++) {
+          if (list[i].description === GIST_DESC) { found = list[i]; break }
+        }
+        if (found) {
+          gistId = found.id
+          localStorage.setItem('bp_catalog_gist_id', gistId)
+          fetchGist(gistId)
+        } else {
+          setGistStatus('unsynced', 'Notes not yet saved')
+        }
+      })
+      .catch(function () { setGistStatus('unsynced', 'Notes not yet saved') })
+  }
 
-    cat.repos.forEach(function (repo) {
-      var row = document.createElement('div')
-      row.className = 'repo-row'
-
-      var info = document.createElement('div')
-      info.className = 'repo-info'
-
-      var nameRow = document.createElement('div')
-      nameRow.className = 'repo-name-row'
-
-      var nameSpan = document.createElement('span')
-      nameSpan.className = 'repo-name'
-      nameSpan.textContent = repo.name
-
-      var badge = document.createElement('span')
-      badge.className = 'badge ' + (repo.vis === 'private' ? 'badge-private' : 'badge-public')
-      badge.textContent = repo.vis
-
-      nameRow.appendChild(nameSpan)
-      nameRow.appendChild(badge)
-      info.appendChild(nameRow)
-
-      var desc = document.createElement('div')
-      desc.className = 'repo-desc'
-      desc.textContent = repo.desc
-      info.appendChild(desc)
-
-      if (repo.url) {
-        var liveLink = document.createElement('a')
-        liveLink.className = 'repo-live'
-        liveLink.href = repo.url
-        liveLink.target = '_blank'
-        liveLink.rel = 'noopener'
-        liveLink.textContent = repo.url.replace('https://', '')
-        info.appendChild(liveLink)
+  function populateNotes () {
+    REPOS.forEach(function (repo) {
+      var ta = document.getElementById('note-' + repo.name)
+      if (ta && notes[repo.name]) {
+        ta.value = notes[repo.name]
+        autoGrowTa(ta)
       }
-
-      // GitHub link
-      var ghLink = document.createElement('a')
-      ghLink.className = 'repo-link'
-      ghLink.href = GITHUB_BASE + '/' + repo.name
-      ghLink.target = '_blank'
-      ghLink.rel = 'noopener'
-      ghLink.title = 'Open ' + repo.name + ' on GitHub'
-      var linkSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
-      linkSvg.setAttribute('viewBox', '0 0 16 16')
-      linkSvg.setAttribute('fill', 'currentColor')
-      var linkPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
-      linkPath.setAttribute('d', 'M2.75 3.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h1.5a.75.75 0 0 1 0 1.5h-1.5A1.75 1.75 0 0 1 1 11.25v-7.5C1 2.784 1.784 2 2.75 2h7.5A1.75 1.75 0 0 1 12 3.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.25.25 0 0 0-.25-.25h-7.5ZM5.75 5a.75.75 0 0 0 0 1.5h5.19l-3.22 3.22a.749.749 0 0 0 .326 1.275.749.749 0 0 0 .734-.215l3.22-3.22v5.19a.75.75 0 0 0 1.5 0V5.75A.75.75 0 0 0 12.5 5h-6.75Z')
-      linkSvg.appendChild(linkPath)
-      ghLink.appendChild(linkSvg)
-
-      row.appendChild(info)
-      row.appendChild(ghLink)
-      body.appendChild(row)
     })
-
-    section.appendChild(body)
-    return section
   }
 
-  function renderProjects() {
+  /* ── Gist: save notes ── */
+  function saveNotes (repoName) {
+    var statusEl = document.getElementById('note-status-' + repoName)
+    if (statusEl) { statusEl.textContent = 'saving\u2026'; statusEl.className = 'notes-status saving' }
+
+    var payload = JSON.stringify({ description: GIST_DESC, public: false, files: {} })
+    var filesObj = {}
+    filesObj[GIST_FILENAME] = { content: JSON.stringify(notes, null, 2) }
+    var body = JSON.stringify({ description: GIST_DESC, public: false, files: filesObj })
+
+    var url, method
+    if (gistId) {
+      url = 'https://api.github.com/gists/' + gistId
+      method = 'PATCH'
+    } else {
+      url = 'https://api.github.com/gists'
+      method = 'POST'
+    }
+
+    fetch(url, { method: method, headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()), body: body })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status) })
+      .then(function (data) {
+        if (!gistId) {
+          gistId = data.id
+          localStorage.setItem('bp_catalog_gist_id', gistId)
+        }
+        if (statusEl) { statusEl.textContent = 'saved \u2713'; statusEl.className = 'notes-status saved' }
+        setGistStatus('synced', 'Notes synced \u00b7 gist ID: ' + gistId)
+        setTimeout(function () { if (statusEl) { statusEl.textContent = ''; statusEl.className = 'notes-status' } }, 2500)
+      })
+      .catch(function () {
+        if (statusEl) { statusEl.textContent = 'error'; statusEl.className = 'notes-status' }
+      })
+  }
+
+  /* ── Auto-grow textarea ── */
+  function autoGrowTa (ta) {
+    ta.style.height = 'auto'
+    ta.style.height = ta.scrollHeight + 'px'
+  }
+
+  /* ── Build table head ── */
+  var COLUMNS = [
+    { key: 'dot',    label: '\u00b7',       cls: 'col-dot',    noSort: true },
+    { key: 'name',   label: 'Repository',   cls: 'col-repo',   noSort: false },
+    { key: 'cat',    label: 'Category',     cls: 'col-cat',    noSort: false },
+    { key: 'deploy', label: 'Deployed',     cls: 'col-deploy', noSort: false },
+    { key: 'push',   label: 'Last Push',    cls: 'col-push',   noSort: false },
+    { key: 'vulns',  label: 'Vulns',        cls: 'col-vulns',  noSort: false },
+    { key: 'notes',  label: 'Notes',        cls: 'col-notes',  noSort: true  },
+  ]
+
+  function buildHead () {
+    var tr = document.getElementById('table-head-row')
+    COLUMNS.forEach(function (col) {
+      var th = document.createElement('th')
+      th.className = col.cls + (col.noSort ? ' no-sort' : '')
+      th.textContent = col.label
+      if (!col.noSort) {
+        th.addEventListener('click', function () {
+          if (sortCol === col.key) {
+            sortDir = -sortDir
+          } else {
+            sortCol = col.key
+            sortDir = 1
+          }
+          renderRows()
+          updateSortIndicators()
+        })
+      }
+      th.dataset.colKey = col.key
+      tr.appendChild(th)
+    })
+  }
+
+  function updateSortIndicators () {
+    var ths = document.querySelectorAll('#table-head-row th')
+    ths.forEach(function (th) {
+      th.classList.remove('sorted-asc', 'sorted-desc')
+      if (th.dataset.colKey === sortCol) {
+        th.classList.add(sortDir === 1 ? 'sorted-asc' : 'sorted-desc')
+      }
+    })
+  }
+
+  /* ── Build a single table row ── */
+  function buildRow (repo) {
+    var tr = document.createElement('tr')
+    tr.dataset.name = repo.name
+    tr.dataset.cat = repo.cat
+    tr.dataset.desc = repo.desc.toLowerCase()
+
+    // Col 1: status dot
+    var tdDot = document.createElement('td')
+    tdDot.className = 'col-dot'
+    var dot = document.createElement('span')
+    dot.className = 'status-circle ' + dotClass(repo)
+    tdDot.appendChild(dot)
+    tr.appendChild(tdDot)
+
+    // Col 2: repository
+    var tdRepo = document.createElement('td')
+    tdRepo.className = 'col-repo'
+    var repoCell = document.createElement('div')
+    repoCell.className = 'repo-cell'
+
+    var mono = document.createElement('span')
+    mono.className = 'repo-mono'
+    mono.textContent = repo.name
+
+    var visBadge = document.createElement('span')
+    visBadge.className = 'vis-badge vis-' + repo.vis
+    visBadge.textContent = repo.vis
+
+    var ghLink = document.createElement('a')
+    ghLink.className = 'gh-link'
+    ghLink.href = 'https://github.com/victorycross/' + repo.name
+    ghLink.target = '_blank'
+    ghLink.rel = 'noopener'
+    ghLink.title = 'Open on GitHub'
+    var extSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    extSvg.setAttribute('viewBox', '0 0 16 16')
+    extSvg.setAttribute('fill', 'currentColor')
+    var extPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    extPath.setAttribute('d', 'M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.854-1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1Z')
+    extSvg.appendChild(extPath)
+    ghLink.appendChild(extSvg)
+
+    repoCell.appendChild(mono)
+    repoCell.appendChild(visBadge)
+    repoCell.appendChild(ghLink)
+    tdRepo.appendChild(repoCell)
+    tr.appendChild(tdRepo)
+
+    // Col 3: category
+    var tdCat = document.createElement('td')
+    tdCat.className = 'col-cat'
+    var catMeta = CATS[repo.cat]
+    if (catMeta) {
+      var pill = document.createElement('span')
+      pill.className = 'cat-pill'
+      pill.style.background = catMeta.color
+      pill.style.color = catMeta.text
+      pill.textContent = catMeta.label
+      tdCat.appendChild(pill)
+    }
+    tr.appendChild(tdCat)
+
+    // Col 4: deployed
+    var tdDeploy = document.createElement('td')
+    tdDeploy.className = 'col-deploy'
+    if (repo.deploy) {
+      var deployAnchor = document.createElement('a')
+      deployAnchor.className = 'deploy-link'
+      deployAnchor.href = repo.deploy.url
+      deployAnchor.target = '_blank'
+      deployAnchor.rel = 'noopener'
+      var deployBadge = document.createElement('span')
+      deployBadge.className = 'deploy-badge'
+      // host icon placeholder (text only)
+      deployBadge.textContent = repo.deploy.host
+      deployAnchor.appendChild(deployBadge)
+      tdDeploy.appendChild(deployAnchor)
+    } else {
+      var dash = document.createElement('span')
+      dash.style.color = 'var(--ink-tertiary)'
+      dash.textContent = '\u2014'
+      tdDeploy.appendChild(dash)
+    }
+    tr.appendChild(tdDeploy)
+
+    // Col 5: last push
+    var tdPush = document.createElement('td')
+    tdPush.className = 'col-push'
+    var pushSpan = document.createElement('span')
+    pushSpan.className = 'push-cell push-loading'
+    pushSpan.textContent = '\u2026'
+    pushSpan.id = 'push-' + repo.name
+    tdPush.appendChild(pushSpan)
+    tr.appendChild(tdPush)
+
+    // Col 6: vulns
+    var tdVulns = document.createElement('td')
+    tdVulns.className = 'col-vulns'
+    var vulnSpan = document.createElement('span')
+    if (repo.vulns === null) {
+      vulnSpan.className = 'vuln-unk'
+      vulnSpan.textContent = '?'
+    } else if (repo.vulns === 0) {
+      vulnSpan.className = 'vuln-ok'
+      vulnSpan.textContent = '\u2713 0'
+    } else {
+      vulnSpan.className = 'vuln-bad'
+      vulnSpan.textContent = '\u26a0 ' + repo.vulns
+    }
+    tdVulns.appendChild(vulnSpan)
+    tr.appendChild(tdVulns)
+
+    // Col 7: notes
+    var tdNotes = document.createElement('td')
+    tdNotes.className = 'col-notes'
+    var notesWrap = document.createElement('div')
+    notesWrap.className = 'notes-wrap'
+
+    var ta = document.createElement('textarea')
+    ta.className = 'notes-ta'
+    ta.id = 'note-' + repo.name
+    ta.rows = 2
+    ta.placeholder = 'Add notes\u2026'
+    ta.spellcheck = false
+
+    var noteStatus = document.createElement('span')
+    noteStatus.className = 'notes-status'
+    noteStatus.id = 'note-status-' + repo.name
+
+    ta.addEventListener('input', function () {
+      autoGrowTa(ta)
+      notes[repo.name] = ta.value
+      if (noteTimers[repo.name]) clearTimeout(noteTimers[repo.name])
+      noteTimers[repo.name] = setTimeout(function () { saveNotes(repo.name) }, 1500)
+    })
+
+    notesWrap.appendChild(ta)
+    notesWrap.appendChild(noteStatus)
+    tdNotes.appendChild(notesWrap)
+    tr.appendChild(tdNotes)
+
+    return tr
+  }
+
+  /* ── Render / re-render rows ── */
+  function renderRows () {
+    var tbody = document.getElementById('table-body')
+
+    // sort a copy
+    var sorted = REPOS.slice().sort(function (a, b) {
+      var av = sortVal(a, sortCol)
+      var bv = sortVal(b, sortCol)
+      if (av < bv) return -sortDir
+      if (av > bv) return sortDir
+      return 0
+    })
+
+    // clear existing rows (preserve textareas by detaching)
+    while (tbody.firstChild) tbody.removeChild(tbody.firstChild)
+
+    var anyVisible = false
+    sorted.forEach(function (repo) {
+      var tr = buildRow(repo)
+      // restore note content
+      var ta = tr.querySelector('textarea')
+      if (ta && notes[repo.name]) { ta.value = notes[repo.name]; autoGrowTa(ta) }
+      // restore push date
+      var pushEl = tr.querySelector('#push-' + repo.name)
+      if (pushEl && pushDates[repo.name]) {
+        pushEl.textContent = relTime(pushDates[repo.name])
+        pushEl.classList.remove('push-loading')
+      }
+      // filter
+      var nameMatch = repo.name.toLowerCase().indexOf(filterSearch) !== -1
+      var descMatch = repo.desc.toLowerCase().indexOf(filterSearch) !== -1
+      var catMatch  = !filterCat || repo.cat === filterCat
+      if ((!filterSearch || nameMatch || descMatch) && catMatch) {
+        anyVisible = true
+      } else {
+        tr.classList.add('hidden-row')
+      }
+      tbody.appendChild(tr)
+    })
+
+    // empty state
+    var existingEmpty = document.getElementById('empty-row')
+    if (existingEmpty) existingEmpty.parentNode.removeChild(existingEmpty)
+    if (!anyVisible) {
+      var emptyTr = document.createElement('tr')
+      emptyTr.id = 'empty-row'
+      emptyTr.className = 'empty-row'
+      var emptyTd = document.createElement('td')
+      emptyTd.colSpan = COLUMNS.length
+      emptyTd.textContent = 'No repositories match your search.'
+      emptyTr.appendChild(emptyTd)
+      tbody.appendChild(emptyTr)
+    }
+  }
+
+  /* ── Populate category filter dropdown ── */
+  function buildCatFilter () {
+    var sel = document.getElementById('cat-filter')
+    CAT_ORDER.forEach(function (catKey) {
+      var opt = document.createElement('option')
+      opt.value = catKey
+      opt.textContent = CATS[catKey].label
+      sel.appendChild(opt)
+    })
+    sel.addEventListener('change', function () {
+      filterCat = sel.value
+      renderRows()
+    })
+  }
+
+  /* ── Fetch push dates ── */
+  function fetchPushDates () {
+    fetch('https://api.github.com/users/victorycross/repos?per_page=100&type=owner', { headers: authHeaders() })
+      .then(function (r) { return r.ok ? r.json() : [] })
+      .then(function (list) {
+        list.forEach(function (r) {
+          if (r.pushed_at) pushDates[r.name] = r.pushed_at
+        })
+        // update visible cells
+        REPOS.forEach(function (repo) {
+          var el = document.getElementById('push-' + repo.name)
+          if (el) {
+            if (pushDates[repo.name]) {
+              el.textContent = relTime(pushDates[repo.name])
+              el.classList.remove('push-loading')
+            } else {
+              el.textContent = '\u2014'
+              el.classList.remove('push-loading')
+            }
+          }
+        })
+      })
+      .catch(function () {
+        REPOS.forEach(function (repo) {
+          var el = document.getElementById('push-' + repo.name)
+          if (el) { el.textContent = '\u2014'; el.classList.remove('push-loading') }
+        })
+      })
+  }
+
+  /* ── Search ── */
+  document.getElementById('search-input').addEventListener('input', function () {
+    filterSearch = this.value.trim().toLowerCase()
+    renderRows()
+  })
+
+  /* ── Init catalog after auth ── */
+  function initCatalog () {
     document.getElementById('login-view').style.display = 'none'
-    var pv = document.getElementById('projects-view')
-    pv.style.display = 'block'
+    document.getElementById('catalog-view').style.display = 'block'
 
-    var total = CATEGORIES.reduce(function (s, c) { return s + c.repos.length }, 0)
-    document.getElementById('repo-summary').textContent =
-      total + ' active repositories across ' + CATEGORIES.length + ' categories'
+    // Repo count label
+    document.getElementById('repo-count-label').textContent = REPOS.length + ' active repos'
 
-    var container = document.getElementById('categories-container')
-    container.textContent = '' // clear
-    CATEGORIES.forEach(function (cat) {
-      container.appendChild(renderCategory(cat))
-    })
+    buildHead()
+    buildCatFilter()
+    renderRows()
+    updateSortIndicators()
+    loadGistNotes()
+    fetchPushDates()
   }
 
-  // ── Init ──
+  /* ── Bootstrap ── */
   var stored = getToken()
   if (stored) {
-    fetch('https://api.github.com/user', {
-      headers: { Authorization: 'token ' + stored }
-    }).then(function (r) {
-      if (!r.ok) { clearToken(); return null }
-      return r.json()
-    }).then(function (user) {
-      if (user && user.login === 'victorycross') { renderProjects() }
-      else { clearToken() }
-    }).catch(function () { clearToken() })
+    fetch('https://api.github.com/user', { headers: { Authorization: 'token ' + stored } })
+      .then(function (r) { return r.ok ? r.json() : null })
+      .then(function (user) {
+        if (user && user.login === 'victorycross') { initCatalog() }
+        else { clearToken() }
+      })
+      .catch(function () { clearToken() })
   }
+
 })()
 </script>
 </body>
