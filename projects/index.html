@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Project Repository — BrightPath Technologies</title>
+<meta name="robots" content="noindex,nofollow"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f9fafb;
+    --surface: #ffffff;
+    --border: rgba(0,0,0,0.10);
+    --ink: #111827;
+    --ink-secondary: #6b7280;
+    --ink-tertiary: #9ca3af;
+    --accent: #2563eb;
+    --accent-light: rgba(37,99,235,0.08);
+    --sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: var(--sans); background: var(--bg); color: var(--ink); line-height: 1.6; min-height: 100vh; }
+
+  header {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border); padding: 0 24px;
+  }
+  .header-inner {
+    max-width: 800px; margin: 0 auto;
+    display: flex; align-items: center; justify-content: space-between; height: 60px;
+  }
+  .header-logo { font-size: 15px; font-weight: 600; color: var(--ink); text-decoration: none; }
+  .header-logo span { font-weight: 400; color: var(--ink-secondary); font-size: 13px; margin-left: 6px; }
+  .header-back { font-size: 13px; color: var(--ink-secondary); text-decoration: none; display: flex; align-items: center; gap: 4px; }
+  .header-back:hover { color: var(--ink); }
+
+  #login-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 80px 24px 24px; }
+  .login-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 40px; width: 100%; max-width: 380px; box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  }
+  .login-badge {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-tertiary); margin-bottom: 28px;
+  }
+  .login-badge svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .login-card h1 { font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+  .login-card .subtitle { font-size: 13px; color: var(--ink-secondary); margin-bottom: 24px; }
+  .login-card .subtitle code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 11px; background: #f3f4f6; padding: 2px 5px; border-radius: 4px;
+  }
+  label { display: block; font-size: 12px; font-weight: 500; color: var(--ink-secondary); margin-bottom: 6px; }
+  input[type="password"] {
+    width: 100%; padding: 9px 12px;
+    border: 1px solid var(--border); border-radius: 8px;
+    font-size: 13px; font-family: 'SF Mono', 'Fira Code', monospace;
+    outline: none; transition: border-color 0.15s, box-shadow 0.15s; background: var(--surface);
+  }
+  input[type="password"]:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+  .error-msg {
+    font-size: 12px; color: #dc2626; background: #fef2f2; border: 1px solid #fecaca;
+    border-radius: 8px; padding: 10px 12px; margin-top: 12px; display: none;
+  }
+  .btn-primary {
+    margin-top: 16px; width: 100%;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 10px 16px; background: #111827; color: #fff;
+    border: none; border-radius: 8px;
+    font-size: 13px; font-weight: 500; font-family: var(--sans);
+    cursor: pointer; transition: background 0.15s;
+  }
+  .btn-primary:hover { background: #374151; }
+  .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+  .btn-primary svg { width: 15px; height: 15px; }
+  .login-hint { margin-top: 20px; font-size: 11px; color: var(--ink-tertiary); text-align: center; }
+  .login-hint a { color: var(--ink-tertiary); }
+  .login-hint a:hover { color: var(--ink-secondary); }
+
+  #projects-view { display: none; padding: 80px 24px 48px; }
+  .projects-inner { max-width: 800px; margin: 0 auto; }
+  .page-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 32px; padding-top: 16px; }
+  .page-header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .page-header .subtitle { font-size: 13px; color: var(--ink-secondary); margin-top: 4px; }
+  .signout-btn { font-size: 12px; color: var(--ink-tertiary); background: none; border: none; cursor: pointer; font-family: var(--sans); padding: 4px; }
+  .signout-btn:hover { color: var(--ink-secondary); }
+
+  .category { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 12px; }
+  .category-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 20px; cursor: pointer; background: none; border: none;
+    width: 100%; font-family: var(--sans); text-align: left; transition: background 0.12s;
+  }
+  .category-header:hover { background: #f9fafb; }
+  .cat-title { font-size: 13px; font-weight: 600; color: var(--ink); }
+  .cat-count { font-size: 12px; color: var(--ink-tertiary); margin-left: 8px; }
+  .cat-chevron { width: 16px; height: 16px; color: var(--ink-tertiary); transition: transform 0.2s; flex-shrink: 0; }
+  .category.collapsed .cat-chevron { transform: rotate(-90deg); }
+  .category-body { padding: 0 20px 4px; }
+  .category.collapsed .category-body { display: none; }
+
+  .repo-row {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid #f3f4f6;
+  }
+  .repo-row:last-child { border-bottom: none; }
+  .repo-info { min-width: 0; flex: 1; }
+  .repo-name-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .repo-name { font-size: 13px; font-weight: 500; font-family: 'SF Mono', 'Fira Code', monospace; color: var(--ink); }
+  .badge { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 20px; letter-spacing: 0.02em; }
+  .badge-public { background: var(--accent-light); color: var(--accent); }
+  .badge-private { background: #f3f4f6; color: var(--ink-secondary); }
+  .repo-desc { font-size: 12px; color: var(--ink-secondary); margin-top: 3px; line-height: 1.5; }
+  .repo-live { font-size: 11px; color: var(--accent); text-decoration: none; margin-top: 2px; display: inline-block; }
+  .repo-live:hover { text-decoration: underline; }
+  .repo-link {
+    flex-shrink: 0; padding: 6px; color: var(--ink-tertiary); text-decoration: none;
+    border-radius: 6px; transition: background 0.12s, color 0.12s;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .repo-link:hover { background: #f3f4f6; color: var(--ink); }
+  .repo-link svg { width: 14px; height: 14px; }
+
+  .page-footer { text-align: center; margin-top: 32px; font-size: 12px; color: var(--ink-tertiary); }
+  .page-footer a { color: var(--ink-tertiary); }
+  .page-footer a:hover { color: var(--ink-secondary); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="/" class="header-logo">BrightPath Technologies <span>Private</span></a>
+    <a href="/" class="header-back">
+      <svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L4.81 7h7.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06z"/></svg>
+      Home
+    </a>
+  </div>
+</header>
+
+<div id="login-view">
+  <div class="login-card">
+    <div class="login-badge">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M4 5a4 4 0 0 1 8 0v2h.25c.966 0 1.75.784 1.75 1.75v4.5A1.75 1.75 0 0 1 12.25 15h-8.5A1.75 1.75 0 0 1 2 13.25v-4.5C2 7.784 2.784 7 3.75 7H4Zm8.25 3.5h-8.5a.25.25 0 0 0-.25.25v4.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-4.5a.25.25 0 0 0-.25-.25ZM10.5 5a2.5 2.5 0 1 0-5 0v2h5V5Z"/></svg>
+      Private Area
+    </div>
+    <h1>Sign in</h1>
+    <p class="subtitle">Enter a GitHub Personal Access Token for <code>victorycross</code></p>
+    <form id="login-form">
+      <label for="token-input">GitHub Token</label>
+      <input type="password" id="token-input" placeholder="ghp_••••••••••••••••••••" autocomplete="current-password" spellcheck="false"/>
+      <div class="error-msg" id="error-msg"></div>
+      <button type="submit" class="btn-primary" id="login-btn">
+        <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+        Continue
+      </button>
+    </form>
+    <p class="login-hint">Generate a token at <a href="https://github.com/settings/tokens" target="_blank" rel="noopener">github.com/settings/tokens</a></p>
+  </div>
+</div>
+
+<div id="projects-view">
+  <div class="projects-inner">
+    <div class="page-header">
+      <div>
+        <h1>Project Repository</h1>
+        <p class="subtitle" id="repo-summary"></p>
+      </div>
+      <button class="signout-btn" id="signout-btn">Sign out</button>
+    </div>
+    <div id="categories-container"></div>
+    <p class="page-footer">
+      Archived repositories excluded &middot;
+      <a href="https://github.com/victorycross" target="_blank" rel="noopener">github.com/victorycross</a>
+    </p>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict'
+
+  var GITHUB_BASE = 'https://github.com/victorycross'
+
+  // All repo data is static — no user input goes into DOM rendering
+  var CATEGORIES = [
+    {
+      id: 'brightpath', label: 'BrightPath / Business',
+      repos: [
+        { name: 'BrightPath-Technologies', desc: 'Business consulting website \u2014 brightpathtechnology.io', vis: 'public' },
+        { name: 'brightpath-foundation', desc: 'Professional website for BrightPath Foundation \u2014 Illuminating Educational Pathways', vis: 'public' },
+        { name: 'brightpath-risk-tracker', desc: 'Risk tracker tool', vis: 'public' },
+        { name: 'victorycross.github.io', desc: 'GitHub Pages root \u2014 BrightPath Technology landing page', vis: 'public' },
+      ]
+    },
+    {
+      id: 'ai', label: 'AI & Personas',
+      repos: [
+        { name: 'persona-x', desc: 'Structured AI persona creation, validation, and panel runtime framework', vis: 'public', url: 'https://advisors.brightpathtechnology.io' },
+        { name: '500-agents', desc: 'Curated collection of AI agent use cases across industries', vis: 'private' },
+        { name: 'agentic-core', desc: 'Core agentic framework and shared utilities', vis: 'private' },
+        { name: 'demo-agent', desc: 'Template test \u2014 minimal agentic demo', vis: 'private' },
+      ]
+    },
+    {
+      id: 'risk', label: 'Risk & Compliance Tools',
+      repos: [
+        { name: 'pwc-risk-platform', desc: 'Comprehensive risk assessment, compliance tracking, and governance framework', vis: 'private' },
+        { name: 'compliance-canvas', desc: 'Interactive compliance framework mapping and standards comparison tool', vis: 'private' },
+        { name: 'tprm', desc: 'Technology Risk & Compliance Program with One Firm Risk integration', vis: 'private' },
+        { name: 'sdlc-compliance-auditor', desc: 'Enterprise SDLC Compliance Audit & Vibe-Code Remediation Tool', vis: 'private' },
+        { name: 'evidence-coordinator', desc: 'Evidence collection and coordination tool for audit engagements', vis: 'private' },
+        { name: 'exception-dashboard', desc: 'Exception tracking and management dashboard for audit and compliance workflows', vis: 'private' },
+        { name: 'copilot-strategy-dashboard', desc: 'M365 Copilot governance and adoption strategy dashboard', vis: 'public' },
+      ]
+    },
+    {
+      id: 'personal', label: 'Personal / Portfolio',
+      repos: [
+        { name: 'david-martin-website', desc: 'Personal and professional portfolio \u2014 david-martin.ca', vis: 'public', url: 'https://david-martin.ca' },
+        { name: 'david-martin-canvas', desc: 'Portfolio design experiments', vis: 'public' },
+        { name: 'martin-family-history', desc: 'Martin family genealogy research and documentation', vis: 'private' },
+        { name: 'jorgensen-kidd-archives', desc: 'Danish genealogy archives \u2014 J\u00f8rgensen and Kidd family records', vis: 'private' },
+      ]
+    },
+    {
+      id: 'apps', label: 'Apps & Tools',
+      repos: [
+        { name: 'cleaning-planner', desc: 'Home Cleaning Planner \u2014 room-by-room task tracker for the whole household', vis: 'public' },
+        { name: 'cost-wise-home-ai', desc: 'AI-powered home cost optimization tool', vis: 'private' },
+        { name: 'supply-savvy', desc: 'Supply chain optimization and tracking tool', vis: 'private' },
+        { name: 'staff-vision-insights-dashboard', desc: 'Staff analytics and insights dashboard', vis: 'private' },
+        { name: 'safety-radar-canada', desc: 'Canadian safety incident tracking and visualization', vis: 'public' },
+        { name: 'crisis-guardian', desc: 'Crisis response coordination and incident management platform', vis: 'public' },
+        { name: 'tusc-website', desc: 'Official website for the Toronto Urban Scooter Community (TUSC)', vis: 'public' },
+        { name: 'MediaOrganizerApp', desc: 'Professional macOS media file organizer built with SwiftUI', vis: 'public' },
+      ]
+    },
+    {
+      id: 'ofr', label: 'OFR / Professional Work',
+      repos: [
+        { name: 'OFR-Issue-Tracker', desc: 'M365-native Power Apps canvas application for cross-firm risk issue management', vis: 'public' },
+        { name: 'ofr_tracker_incident', desc: 'OFR incident tracking utility', vis: 'public' },
+        { name: 'solution-intake-review', desc: 'Solution intake and review workflow tool', vis: 'private' },
+      ]
+    },
+    {
+      id: 'internal', label: 'Internal / Infrastructure',
+      repos: [
+        { name: 'project-templates', desc: 'Shared project scaffolding and templates', vis: 'private' },
+      ]
+    },
+  ]
+
+  // ── Auth ──
+  function getToken() { return sessionStorage.getItem('gh_token') }
+  function saveToken(t) { sessionStorage.setItem('gh_token', t) }
+  function clearToken() { sessionStorage.removeItem('gh_token') }
+
+  function showError(msg) {
+    var el = document.getElementById('error-msg')
+    el.textContent = msg
+    el.style.display = msg ? 'block' : 'none'
+  }
+
+  document.getElementById('login-form').addEventListener('submit', function (e) {
+    e.preventDefault()
+    var input = document.getElementById('token-input')
+    var token = input.value.trim()
+    var btn = document.getElementById('login-btn')
+    if (!token) return
+    btn.disabled = true
+    showError('')
+    fetch('https://api.github.com/user', {
+      headers: { Authorization: 'token ' + token }
+    }).then(function (res) {
+      if (!res.ok) { showError('Invalid token \u2014 check it and try again.'); btn.disabled = false; return null }
+      return res.json()
+    }).then(function (user) {
+      if (!user) return
+      if (user.login !== 'victorycross') { showError('Unauthorized \u2014 this page is restricted.'); btn.disabled = false; return }
+      saveToken(token)
+      renderProjects()
+    }).catch(function () {
+      showError('Could not reach GitHub \u2014 check your connection.')
+      btn.disabled = false
+    })
+  })
+
+  document.getElementById('signout-btn').addEventListener('click', function () {
+    clearToken()
+    location.reload()
+  })
+
+  // ── Render (all data is static, safe to use DOM methods) ──
+  function toggleCategory(id) {
+    var el = document.getElementById('cat-' + id)
+    if (el) el.classList.toggle('collapsed')
+  }
+
+  function renderCategory(cat) {
+    var section = document.createElement('div')
+    section.className = 'category'
+    section.id = 'cat-' + cat.id
+
+    var btn = document.createElement('button')
+    btn.className = 'category-header'
+    btn.type = 'button'
+    btn.addEventListener('click', function () { toggleCategory(cat.id) })
+
+    var titleWrap = document.createElement('div')
+    var titleSpan = document.createElement('span')
+    titleSpan.className = 'cat-title'
+    titleSpan.textContent = cat.label
+    var countSpan = document.createElement('span')
+    countSpan.className = 'cat-count'
+    countSpan.textContent = cat.repos.length + ' repos'
+    titleWrap.appendChild(titleSpan)
+    titleWrap.appendChild(countSpan)
+
+    // chevron SVG
+    var chevron = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    chevron.setAttribute('viewBox', '0 0 16 16')
+    chevron.setAttribute('fill', 'currentColor')
+    chevron.classList.add('cat-chevron')
+    var chevPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+    chevPath.setAttribute('d', 'M4.427 7.427l3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z')
+    chevron.appendChild(chevPath)
+
+    btn.appendChild(titleWrap)
+    btn.appendChild(chevron)
+    section.appendChild(btn)
+
+    var body = document.createElement('div')
+    body.className = 'category-body'
+
+    cat.repos.forEach(function (repo) {
+      var row = document.createElement('div')
+      row.className = 'repo-row'
+
+      var info = document.createElement('div')
+      info.className = 'repo-info'
+
+      var nameRow = document.createElement('div')
+      nameRow.className = 'repo-name-row'
+
+      var nameSpan = document.createElement('span')
+      nameSpan.className = 'repo-name'
+      nameSpan.textContent = repo.name
+
+      var badge = document.createElement('span')
+      badge.className = 'badge ' + (repo.vis === 'private' ? 'badge-private' : 'badge-public')
+      badge.textContent = repo.vis
+
+      nameRow.appendChild(nameSpan)
+      nameRow.appendChild(badge)
+      info.appendChild(nameRow)
+
+      var desc = document.createElement('div')
+      desc.className = 'repo-desc'
+      desc.textContent = repo.desc
+      info.appendChild(desc)
+
+      if (repo.url) {
+        var liveLink = document.createElement('a')
+        liveLink.className = 'repo-live'
+        liveLink.href = repo.url
+        liveLink.target = '_blank'
+        liveLink.rel = 'noopener'
+        liveLink.textContent = repo.url.replace('https://', '')
+        info.appendChild(liveLink)
+      }
+
+      // GitHub link
+      var ghLink = document.createElement('a')
+      ghLink.className = 'repo-link'
+      ghLink.href = GITHUB_BASE + '/' + repo.name
+      ghLink.target = '_blank'
+      ghLink.rel = 'noopener'
+      ghLink.title = 'Open ' + repo.name + ' on GitHub'
+      var linkSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      linkSvg.setAttribute('viewBox', '0 0 16 16')
+      linkSvg.setAttribute('fill', 'currentColor')
+      var linkPath = document.createElementNS('http://www.w3.org/2000/svg', 'path')
+      linkPath.setAttribute('d', 'M2.75 3.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h1.5a.75.75 0 0 1 0 1.5h-1.5A1.75 1.75 0 0 1 1 11.25v-7.5C1 2.784 1.784 2 2.75 2h7.5A1.75 1.75 0 0 1 12 3.75v1.5a.75.75 0 0 1-1.5 0v-1.5a.25.25 0 0 0-.25-.25h-7.5ZM5.75 5a.75.75 0 0 0 0 1.5h5.19l-3.22 3.22a.749.749 0 0 0 .326 1.275.749.749 0 0 0 .734-.215l3.22-3.22v5.19a.75.75 0 0 0 1.5 0V5.75A.75.75 0 0 0 12.5 5h-6.75Z')
+      linkSvg.appendChild(linkPath)
+      ghLink.appendChild(linkSvg)
+
+      row.appendChild(info)
+      row.appendChild(ghLink)
+      body.appendChild(row)
+    })
+
+    section.appendChild(body)
+    return section
+  }
+
+  function renderProjects() {
+    document.getElementById('login-view').style.display = 'none'
+    var pv = document.getElementById('projects-view')
+    pv.style.display = 'block'
+
+    var total = CATEGORIES.reduce(function (s, c) { return s + c.repos.length }, 0)
+    document.getElementById('repo-summary').textContent =
+      total + ' active repositories across ' + CATEGORIES.length + ' categories'
+
+    var container = document.getElementById('categories-container')
+    container.textContent = '' // clear
+    CATEGORIES.forEach(function (cat) {
+      container.appendChild(renderCategory(cat))
+    })
+  }
+
+  // ── Init ──
+  var stored = getToken()
+  if (stored) {
+    fetch('https://api.github.com/user', {
+      headers: { Authorization: 'token ' + stored }
+    }).then(function (r) {
+      if (!r.ok) { clearToken(); return null }
+      return r.json()
+    }).then(function (user) {
+      if (user && user.login === 'victorycross') { renderProjects() }
+      else { clearToken() }
+    }).catch(function () { clearToken() })
+  }
+})()
+</script>
+</body>
+</html>
